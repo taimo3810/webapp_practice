@@ -30,7 +30,13 @@
     "JSX": true
   },
   "rules": {
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
-  }
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off"
+  },
+  "ignorePatterns": ["**/__generated__/*.ts"]
 }

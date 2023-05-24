@@ -1,5 +1,5 @@
 {
-  "name": "github-issues-app-with-react",
+  "name": "github-app-with-react",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "generate": "run-s generate:*",
+    "generate:types": "graphql-codegen",
     "lint": "run-p lint:*",
     "lint:eslint": "eslint \"./src/**/*.{ts,tsx}\"",
     "lint:prettier": "prettier \"./src/**/*.{ts,tsx}\" --check",
@@ -17,10 +19,16 @@
     "fix:type": "tsc --noEmit"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.10",
+    "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^3.2.2",
+    "@graphql-codegen/typescript": "^3.0.2",
+    "@graphql-codegen/typescript-operations": "^3.0.2",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
