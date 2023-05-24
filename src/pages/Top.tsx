@@ -34,7 +34,7 @@ export const Top: React.FC = () => {
 
   return (
     <div>
-      <h1>リポジトリ一覧</h1>
+      <h1>opt-tech リポジトリ一覧</h1>
       {content}
     </div>
   );
