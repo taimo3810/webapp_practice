@@ -2,6 +2,7 @@ import React from "react";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Top } from "./pages/Top";
+import { Layout } from "./components/Layout";
 
 const client = new ApolloClient({
   uri: "https://api.github.com/graphql",
@@ -14,7 +15,9 @@ const client = new ApolloClient({
 const App: React.FC = () => {
   return (
     <ApolloProvider client={client}>
-      <Top />
+      <Layout>
+        <Top />
+      </Layout>
     </ApolloProvider>
   );
 };
