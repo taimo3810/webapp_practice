@@ -15,7 +15,7 @@ export const Repository: React.FC<Props> = ({ id, name }) => {
   return (
     <div>
       {id}: {name}
-      <button onClick={() => addStar()}>add start</button>
+      <button onClick={() => addStar()}>add star</button>
     </div>
   );
 };
