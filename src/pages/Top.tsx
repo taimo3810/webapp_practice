@@ -1,41 +1,67 @@
-import { useMemo } from "react";
-
-import { useSearchRepositoriesQuery } from "@/graphql/__generated__/typesAndHooks";
-
+import { useEffect, useMemo, useState } from "react";
 import { Repository } from "@/components/Repository";
+import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth, isLoggingIn } from "../firebase"
+import { useAuthValue } from "@/providers/AuthContext";
 
 export const Top: React.FC = () => {
-  const { error, data } = useSearchRepositoriesQuery({
-    variables: {
-      query: "org:opt-tech",
-    },
-  });
+  const navigate = useNavigate();
+  const currentUser = useAuthValue();
+  
+  
+  const handleLogout = () => {               
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        navigate("/login");
+        console.log("Signed out successfully")
+    }).catch((error) => {
+        // An error happened.
+        console.log(error.errorCode, error.errorMessage)
+    });
+  }
 
-  const content: JSX.Element = useMemo(() => {
-    if (error) {
-      return <p>エラーが発生しました</p>;
-    }
+  // for debugging
+  console.log(currentUser)
+  console.log(isLoggingIn() ? "true" : "false")
 
-    if (!data?.search.nodes) {
-      return <p>データが存在しません</p>;
-    }
+  if (currentUser !== null && currentUser.emailVerified) {
+      return (
+        <div>
+          <h1>トップページ</h1>
+          <h4>You are logging in as {currentUser?.email}</h4>
 
-    return (
-      <>
-        {data.search.nodes
-          .filter((repo): repo is NonNullable<typeof repo> => repo != null)
-          .map((repo) => {
-            if (repo.__typename != "Repository") return;
-            return <Repository key={repo.id} {...repo} />;
-          })}
-      </>
-    );
-  }, [error, data]);
+            <button
+            onClick={() => {
+              handleLogout();
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      );
+  }else{
+    const [redirectMessage, setredirectMessage] = useState("");
+    
 
-  return (
-    <div>
-      <h1>opt-tech リポジトリ一覧</h1>
-      {content}
-    </div>
-  );
-};
+    //  1.useEffect is called after rendering
+    //  2. setTimeout is called after 2 second
+    //  3. a user is redirected to the login page
+    useEffect(() => {
+
+      // if a user is logged in but not verified, redirect to the login page
+      if (currentUser!==null && !currentUser?.emailVerified){
+        setredirectMessage("Please verify your email: " + currentUser?.email)
+      }else{
+        setredirectMessage("You don't login to your account, So, Redirecting to Login Page...")
+      }
+      
+      // redirect to the login page
+      setTimeout(() => {
+        navigate("/login", {replace: true});
+      }, 2000);
+    }, []);
+    
+    return <div>{redirectMessage}</div>;
+  };
+}

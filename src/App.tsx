@@ -1,24 +1,38 @@
-import React from "react";
-
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import React, { useEffect, useState } from "react";
 import { Top } from "./pages/Top";
+import { Login } from "./pages/Login";
 import { Layout } from "./components/Layout";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { AuthProvider } from "./providers/AuthContext";
+import { User, onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
-const client = new ApolloClient({
-  uri: "https://api.github.com/graphql",
-  headers: {
-    Authorization: `Bearer ${import.meta.env.VITE_REACT_APP_GITHUB_TOKEN}`,
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Top />
   },
-  cache: new InMemoryCache(),
-});
+  {
+    path: "/login",
+    element: <Login />
+  },
+]);
 
 const App: React.FC = () => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user)
+    })
+  }, [])
+
   return (
-    <ApolloProvider client={client}>
+    <AuthProvider value={currentUser}>
       <Layout>
-        <Top />
+        <RouterProvider router={router} />
       </Layout>
-    </ApolloProvider>
+    </AuthProvider>
   );
 };
 

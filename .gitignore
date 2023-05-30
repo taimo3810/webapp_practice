@@ -26,3 +26,4 @@ dist-ssr
 .env
 __generated__
 schema.graphql
+src/firebase.tsx

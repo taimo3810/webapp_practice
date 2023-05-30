@@ -9,7 +9,7 @@ import React from "react";
 import { drawerWidth } from "../Layout";
 
 export const Sidebar: React.FC = () => {
-  const menus = ["hoge", "fuga", "poyo"];
+  const menus = ["", "", ""];
 
   const content = (
     <div>

@@ -12,7 +12,7 @@ export const AppBar: React.FC = () => {
       }}
     >
       <Toolbar>
-        <Typography variant="h6">Github リポジトリ検索</Typography>
+        <Typography variant="h6">サービス名</Typography>
       </Toolbar>
     </MuiAppBar>
   );
